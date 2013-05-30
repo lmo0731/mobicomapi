@@ -7,13 +7,18 @@
 //
 
 #import "RequestSender.h"
+#import "NSURLRequest+IgnoreSSL.h"
 
 @implementation RequestSender
 + (NSString*) sendPost:(NSString*)url :(NSString*)body :(NSDictionary*) header :(NSError*) error
 {
+    NSLog(@"%@",url);
     NSData* postData = [body dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     NSString* postLength = [NSString stringWithFormat:@"%ld", (unsigned long)[postData length]];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    if ([url hasPrefix:@"https"]) {
+        [NSURLRequest allowsAnyHTTPSCertificateForHost:url];
+    }
     if(header !=nil) {
         for(id key in header){
             NSString* value = [header valueForKey:key];

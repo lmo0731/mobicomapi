@@ -11,10 +11,10 @@
 static NSString* clientId = @"3fe5cf7d1fbd085b";
 static NSString* clientSecret = @"e3d00e18-236f-43d6-93ef-d2a599eaf813";
 static NSString* authUrl = @"https://api.mobicom.mn/oauth/v1/authorizer/authz?response_type=code&client_id=%@&redirect_uri=%@";
-static NSString* tokenUrl = @"http://api.mobicom.mn/oauth/v1/tokenizer/token?grant_type=authorization_code&client_id=%@&client_secret=%@&redirect_uri=%@&code=%@";
+static NSString* tokenUrl = @"https://api.mobicom.mn/oauth/v1/tokenizer/token?grant_type=authorization_code&client_id=%@&client_secret=%@&redirect_uri=%@&code=%@";
 static NSString* callback = @"http://app-forward.appspot.com/mn.lmo.mobicomapp";
-static NSString* hitoneViewScope = @"http://api.mobicom.mn/oauth/v1/resource/hitone/list?access_token=%@";
-static NSString* fnfListScope = @"http://api.mobicom.mn/oauth/v1/resource/fnf/list?access_token=%@";
+static NSString* hitoneViewScope = @"https://api.mobicom.mn/oauth/v1/resource/hitone/list";
+static NSString* fnfListScope = @"https://api.mobicom.mn/oauth/v1/resource/fnf/list";
 @implementation MobicomAPI
 + (void) auth {
     NSString* redUrl = [callback stringByAppendingString: @""];
@@ -40,7 +40,7 @@ static NSString* fnfListScope = @"http://api.mobicom.mn/oauth/v1/resource/fnf/li
 }
 + (NSString*) hitoneView: (NSString*) token {
     NSError* error;
-    NSString* response = [RequestSender sendPost:[NSString stringWithFormat:hitoneViewScope, token] :@"" :nil :error];
+    NSString* response = [RequestSender sendPost:[NSString stringWithFormat:@"%@?access_token=%@",hitoneViewScope, token] :@"" :nil :error];
     if(error){
         NSLog(@"Error on hitoneView: %@", error);
         return nil;
@@ -49,7 +49,7 @@ static NSString* fnfListScope = @"http://api.mobicom.mn/oauth/v1/resource/fnf/li
 }
 + (NSString*) fnfList: (NSString*) token {
     NSError* error;
-    NSString* response = [RequestSender sendPost:[NSString stringWithFormat:fnfListScope, token] :@"" :nil :error];
+    NSString* response = [RequestSender sendPost:[NSString stringWithFormat:@"%@?access_token=%@",fnfListScope, token] :@"" :nil :error];
     if(error){
         NSLog(@"Error on hitoneView: %@", error);
         return nil;
